@@ -132,6 +132,9 @@ class TestStateMachine:
             "HEAD",
             "master",
             message=f"[ray-test-bot] {self.test.get_name()} failing",
+            env={
+                "REPORT_TO_RAY_TEST_DB": "1",
+            },
         )
         failing_commit = self.test_results[0].commit
         passing_commit = [r.commit for r in self.test_results if r.is_passing()][0]
@@ -194,7 +197,9 @@ class TestStateMachine:
         return len(self.test_results) > 0 and self.test_results[0].is_passing()
 
     def _failing_to_consistently_failing(self) -> bool:
-        return self._passing_to_consistently_failing()
+        return self._passing_to_consistently_failing() or self.test.get(
+            Test.KEY_BISECT_BLAMED_COMMIT
+        )
 
     def _consistently_failing_to_passing(self) -> bool:
         return self._failing_to_passing()
