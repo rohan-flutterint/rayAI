@@ -1714,6 +1714,7 @@
 #######################
 # Tune cloud  tests
 #######################
+
 - name: remove_before_commit
   group: Devprod tests
   working_dir: tune_tests/cloud_tests
@@ -1726,8 +1727,7 @@
 
   run:
     timeout: 600
-    script: exit 40
-
+    script: echo haha
 
 - name: tune_cloud_no_sync_down
   group: Tune cloud tests
